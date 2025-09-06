@@ -1,0 +1,15 @@
+businessBaseCost
+businessLiquidationCost
+repaymentCalc
+workingCapitalNeed
+solvencyRnk
+averageNumber
+balanceTotal 500000000 -1
+revenue
+authorizedCapital
+fixedAssets
+inventory
+receivables
+paymentTaxes
+
+region 05 06 07 09 15 20 26
