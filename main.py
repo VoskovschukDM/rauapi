@@ -1,3 +1,6 @@
+import warnings
+warnings.simplefilter("ignore", FutureWarning)
+
 import requests
 import json
 import datetime
@@ -8,14 +11,8 @@ from openpyxl.utils import get_column_letter
 from openpyxl import load_workbook
 
 
-headers = {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
-    "Accept": "application/json, text/plain, */*",
-    "Host": "rau.nalog.gov.ru",
-    "Referer": "https://rau.nalog.gov.ru/ngsw-worker.js",
-    "Sec-Fetch-Mode": "cors",
-    "Sec-Fetch-Site": "same-orign"
-}
+retries = 10
+days = 7
 
 
 def get_req_from_file():
@@ -133,11 +130,10 @@ def get_list(target_date: datetime.date, columns, requirements, bans):
 
     return result
 
-retries = 10
 columns = ['guid', 'region', 'dateInitiation', 'shortName', 'fullName', 'ogrn', 'inn', 'kpp', 'okvedCd', 'businessBaseCost', 'businessLiquidationCost', 'repaymentCalc', 'workingCapitalNeed', 'solvencyRnk', 'registrationAddress', 'averageNumber', 'balanceTotal', 'revenue', 'authorizedCapital', 'fixedAssets', 'inventory', 'receivables', 'paymentTaxes', 'regionCode']
 result = pd.DataFrame(columns= columns)
 
-for i in range(6, -1, -1):
+for i in range(days - 1, -1, -1):
     date = datetime.date.today() - datetime.timedelta(days=i)
     res = pd.DataFrame(columns= columns)
 
@@ -154,7 +150,7 @@ for i in range(6, -1, -1):
     if not res.empty:
         result = pd.concat([result, res], ignore_index=True)
 
-excel_name = f'{(datetime.date.today() - datetime.timedelta(days=6)).strftime("%d-%m-%Y")}to{datetime.date.today().strftime("%d-%m-%Y")}.xlsx'
+excel_name = f'{(datetime.date.today() - datetime.timedelta(days=days - 1)).strftime("%d-%m-%Y")}to{datetime.date.today().strftime("%d-%m-%Y")}.xlsx'
 result.to_excel(excel_name, index=False, engine="openpyxl")
 
 wb = load_workbook(excel_name)

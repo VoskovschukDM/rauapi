@@ -9,8 +9,7 @@
 # rauapi — Анализатор данных по банкротствам компаний
 ## Обзор проекта
 
-**rauapi** это готовый инструмент (rauapi.exe) для автоматического получения и фильтрации данных о банкротстве компаний с официального портала Федеральной налоговой службы России (rau.nalog.gov.ru
-).
+**rauapi** это готовый инструмент (rauapi.exe) для автоматического получения и фильтрации данных о банкротстве компаний с официального портала Федеральной налоговой службы России (rau.nalog.gov.ru).
 
 Программа применяет фильтры, заданные в req.txt, и генерирует Excel-файл с структурированными результатами за выбранный период (последние 7 дней).
 
@@ -21,7 +20,7 @@
 - [Возможности](#возможности) 
 - [Как использовать](#как-использовать)  
 - [Структура](#структура-релиза)  
-- [Example файл](#example-файл)  
+- [Настройка файла](#настройка-reqtxt)  
 - [Примечания](#примечания)  
 
 ---
@@ -40,23 +39,6 @@
 
 1. **Скачайте архив**
 2. **Настройте фильтры в req.txt или переименуйте и редактируйте req_example.txt**
-  ```bash
-businessBaseCost
-businessLiquidationCost
-repaymentCalc
-workingCapitalNeed
-solvencyRnk
-averageNumber
-balanceTotal 500000000 -1
-revenue
-authorizedCapital
-fixedAssets
-inventory
-receivables
-paymentTaxes
-
-region 05 06 07 09 15 20 26
-  ```
 3. **Запустите программу**
 4. **После выполнения вы получите Excel-файл с результатами за последние 7 дней, например:**
   ```bash
@@ -75,10 +57,55 @@ region 05 06 07 09 15 20 26
 
 ---
 
-## Example файл
+## Настройка req.txt
 
-- Выбраны только компании с balanceTotal больше 500000000
-- Исключены компании из регионов 05, 06, 07, 09, 15, 20, 26
+**req.txt** — настраиваемый файл с двумя разделами:
+
+- **Требования** — минимальные и макимальные требования для компании
+- **Фильтры** — значения для исключения
+
+# Format:
+
+```bash
+parameter min max
+```
+
+**parameter** — параметр
+
+**min** — минимальное значение (-1 для отключения лимита)
+
+**max** — максимальное значение (-1 для отключения лимита)
+
+```bash
+parametr [list of values]
+```
+
+**parameter** — параметр
+
+**[list of values]** — значения, которые буду исключены, разделённые пробелом
+
+# Example req.txt:
+
+```bash
+businessBaseCost
+businessLiquidationCost
+repaymentCalc
+workingCapitalNeed
+solvencyRnk
+averageNumber
+balanceTotal 500000000 -1
+revenue
+authorizedCapital
+fixedAssets
+inventory
+receivables
+paymentTaxes
+
+region 05 06 07 09 15 20 26
+```
+
+Эта настройка оставляет только компании с балансом более 500 млн и исключает компании из указанных регионов.
+
 ---
 
 ## Примечания
@@ -108,7 +135,7 @@ The program applies filters defined in req.txt and generates an Excel file with 
 - [Features](#features) 
 - [How to Use](#how-to-use)  
 - [Structure](#release-package-structure)  
-- [Example file](#example-file)  
+- [File configuration](#configuring-reqtxt)  
 - [Notes](#notes)  
 
 ---
@@ -162,10 +189,54 @@ region 05 06 07 09 15 20 26
 
 ---
 
-## Example file
+## Configuring req.txt
 
-- Filtered companies with balanceTotal more than 500000000
-- Hiden companies from 05, 06, 07, 09, 15, 20, 26 regions
+**req.txt** — configuration file with 2 parts:
+
+- **Requirements** — minimal and maximal characteristics for company
+- **Bans** — values to exclude 
+
+# Format:
+
+```bash
+parameter min max
+```
+
+**parameter** — characteristic
+
+**min** — min value (use -1 for no limit)
+
+**max** — max value (use -1 for no limit)
+
+```bash
+parametr [list of values]
+```
+
+**parameter** — characteristic
+
+**[list of values]** — value to be excluded with space as separator
+
+# Example req.txt:
+
+```bash
+businessBaseCost
+businessLiquidationCost
+repaymentCalc
+workingCapitalNeed
+solvencyRnk
+averageNumber
+balanceTotal 500000000 -1
+revenue
+authorizedCapital
+fixedAssets
+inventory
+receivables
+paymentTaxes
+
+region 05 06 07 09 15 20 26
+```
+
+This setup filters companies with a balance over 500M and excludes specified regions.
 
 ---
 
